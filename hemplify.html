@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hempify: A Web App for Growing Hemp and Fighting Climate Change</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    /* Define some variables for colors and fonts */
+:root {
+  --primary-color: #4caf50;
+  --secondary-color: #f0f0f0;
+  --font-family: "Poppins", sans-serif;
+}
+
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
+/*  Style the loading screen  */
+.loading-screen {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--secondary-color);
+}
+
+#loader-logo {
+  width: 160px;
+  height: 160px;
+}
+
+/* Style the header section */
+header {
+  width: 100%;
+  height: 80px;
+  background-color: var(--primary-color);
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+/* Style the logo element */
+.logo {
+  position: relative; /* Enable positioning of child elements */
+  width: 80px;
+  height: 80px;
+}
+
+/* Style the logo image */
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.logo::before {
+  content: ""; /* Empty content for pseudo-element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Radial gradient for background effect */
+  background-image: radial-gradient(circle closest-side, rgb(230, 230, 230, 0.7), transparent);
+}
+
+/* Style the nav element */
+.nav {
+  display: none;
+}
+
+/* Style the nav list */
+.nav ul {
+  list-style: none;
+  display: flex;
+}
+
+/* Style the nav list items */
+.nav ul li {
+  margin: 0 10px;
+}
+
+/* Style the nav links */
+.nav ul li a {
+  text-decoration: none;
+  font-family: var(--font-family);
+  font-size: 16px;
+  color: var(--secondary-color);
+}
+
+/* Style the user element */
+.user {
+  display: flex;
+  align-items: center;
+}
+
+/* Style the user image */
+.user img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Style the user span */
+.user span {
+  font-family: var(--font-family);
+  font-size: 16px;
+  color: var(--secondary-color);
+}
+
+.hero-image {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+/* Style the main section */
+main {
+  width: 100%;
+  min-height: calc(100vh - 160px);
+  background-color: var(--secondary-color);
+  padding: 20px;
+  display: none;
+}
+
+/* Style the dashboard section */
+.dashboard {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Style the dashboard heading */
+.dashboard h1 {
+  text-align: center;
+  font-family: var(--font-family);
+  font-size: 32px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+/* Style the dashboard paragraph */
+.dashboard p {
+  text-align: center;
+  font-family: var(--font-family);
+  font-size: 18px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+/* Style the cards element */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+
+/* Style the card element */
+.card {
+  width: 100%;
+  height: 300px;
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+/* Style the card heading */
+.card h2 {
+  font-family: var(--font-family);
+  font-size: 24px;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+/* Style the card paragraph */
+.card p {
+  font-family: var(--font-family);
+  font-size: 16px;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Style the card button */
+.card button {
+  width: 100px;
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-family: var(--font-family);
+  font-size: 16px;
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
+}
+
+
+
+
+
+footer {
+  display: none; /* Arrange elements horizontally */
+  justify-content: space-between; /* Distribute elements evenly */
+  align-items: center; /* Align vertically */
+  padding: 15px 20px;
+  background-color: #ddd; /* Light gray background */
+}
+
+.social, .info {
+  list-style: none; /* Remove default bullet points */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+}
+
+.social a, .info a {
+  text-decoration: none; /* Remove underlines */
+  color: #333; /* Dark gray text color */
+  margin-right: 15px; /* Space between links/icons */
+}
+
+.social a:last-child, .info a:last-child { /* Remove margin for last element */
+  margin-right: 0;
+}
+
+.social img, .info a { /* Consistent styling */
+  font-size: 16px; /* Text and icon size */
+}
+
+.copy {
+  text-align: center; /* Center copyright text */
+  font-size: 14px; /* Smaller text size for copyright */
+  color: #999; /* Lighter gray text color */
+}
+
+
+
+/* Make the page responsive for smaller screens */
+@media (max-width: 600px) {
+  /* Hide the nav element */
+  .nav {
+    display: none;
+  }
+
+  /* Reduce the header height */
+  header {
+    height: 60px;
+  }
+
+  /* Reduce the logo width and height */
+  .logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* Reduce the user image width and height */
+  .user img {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Reduce the user span font size */
+  .user span {
+    font-size: 14px;
+  }
+
+  /* Reduce the dashboard heading font size */
+  .dashboard h1 {
+    font-size: 28px;
+  }
+
+  /* Reduce the dashboard paragraph font size */
+  .dashboard p {
+    font-size: 16px;
+  }
+
+  /* Change the cards grid layout to one column */
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reduce the card height */
+  .card {
+    height: 250px;
+  }
+
+  /* Reduce the card heading font size */
+  .card h2 {
+    font-size: 20px;
+  }
+
+  /* Reduce the card paragraph font size */
+  .card p {
+    font-size: 14px;
+  }
+
+  /* Reduce the card button width and height */
+  .card button {
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  /* Reduce the footer height */
+  footer {
+    height: 60px;
+  }
+
+  /* Reduce the social image width and height */
+  .social ul li a {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Reduce the info link font size */
+  .info ul li a {
+    font-size: 14px;
+  }
+
+  /* Reduce the copy paragraph font size */
+  .copy p {
+    font-size: 14px;
+  }
+}
+
+
+
+.modal {
+  display: none; /* Hide the modal initially */
+  position: fixed; /* Position the modal in the center */
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.4); /* Transparent background */
+  z-index: 100; /* Display modal above other elements */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 50%;
+  margin: 100px auto;
+}
+
+.modal-close {
+  float: right;
+  cursor: pointer;
+  border: none;
+  background-color: #ddd;
+  padding: 5px 10px;
+}
+
+.in-content {
+  padding: 30px;
+}
+
+.hero {
+  padding: 50px 0;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
+
+.hero-image {
+  background-image: url("hemp-plantation.webp");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  width: 100%;
+  height:inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column
+}
+
+.hero-button {
+  background-color: var(--secondary-color);
+  color: #2c5d2d;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 16px;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Loading screen -->
+  <div class="loading-screen">
+    <img id="loader-logo" src="kim-hemp-logo.png" alt="logo">
+    <h1>Hempify</h1>
+    <p>Fighting climate change</p>
+  </div>
+
+  <!-- Header section -->
+  <header>
+    <div class="logo">
+      <img src="kim-hemp-logo.png" alt="Hempify logo">
+    </div>
+    <div class="nav">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Guide</a></li>
+        <li><a href="#">Marketplace</a></li>
+        <li><a href="#">Community</a></li>
+        <li><a href="#">Rewards</a></li>
+      </ul>
+    </div>
+    <div class="user">
+      <img src="user.png" alt="User profile picture">
+      <span>Hi, Kim</span>
+    </div>
+  </header>
+
+  <section class="hero hero-image">
+    <div class="hero-content">
+      <h1>Grow a Sustainable Future</h1>
+      <p>Plant your own hemp and experience the benefits firsthand.</p>
+      <button class="hero-button">Learn More</button>
+    </div>
+  </section>
+  
+  
+  <!-- Main section -->
+  <main>
+    <!-- Dashboard section -->
+    <section class="dashboard">
+      <h1>Welcome to Hempify!</h1>
+      <p>Hempify is a web app that helps you grow hemp and fight climate change. Here you can find everything you need to start your hemp journey, from planting to harvesting, from buying to selling, from learning to earning. Join the hemp revolution today!</p>
+      <div class="cards">
+        <div class="card">
+          <h2>Grow</h2>
+          <p>Learn how to grow hemp in your backyard or balcony. Follow our step-by-step guide and track your progress. See how much carbon dioxide you can save by growing hemp.</p>
+          <button id="grow">Start Growing</button>
+        </div>
+        <div class="card">
+          <h2>Shop</h2>
+          <p>Explore our hemp marketplace and discover a variety of hemp products. Buy and sell hemp products, such as food, clothing, cosmetics, and building materials. Support local hemp growers and businesses.</p>
+          <button id="shop">Start Shopping</button>
+        </div>
+        <div class="card">
+          <h2>Connect</h2>
+          <p>Join our hemp community and connect with other hemp enthusiasts. Share your hemp stories and photos, chat with other hemp users, and participate in hemp events and challenges.</p>
+          <button id="connect">Start Connecting</button>
+        </div>
+        <div class="card">
+          <h2>Earn</h2>
+          <p>Earn hemp points and badges for growing, buying, and selling hemp. Redeem your hemp points and badges for hemp prizes, such as discounts, coupons, and freebies.</p>
+          <button id="earn">Start Earning</button>
+        </div>
+      </div>
+    </section>    
+  </main>
+
+  <div id="modal" class="modal">
+    <i class="modal-close fa fa-close">Close</i>
+    <div class="modal-content">
+      
+    </div>    
+  </div>
+
+
+
+      <!-- Footer section -->
+      <footer>
+        <div class="social">
+          <a href="#"><i class="fa fa-facebook-f"></i></a>
+          <a href="#"><i class="fa fa-twitter"></i></a>
+          <a href="#"><i class="fa fa-instagram"></i></a>
+        </div>
+        <div class="info">
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+        <div class="copy">
+          <p>&copy; 2024 Hempify. All rights reserved.</p>
+        </div>
+      </footer>
+
+  <script>
+    const loadingScreen = document.querySelector(".loading-screen");
+    const header = document.querySelector("header");
+    const main = document.querySelector("main");
+    const footer = document.querySelector("footer");
+    document.getElementsByName
+
+    window.addEventListener("load", ()=>{
+      setTimeout(()=>{
+        loadingScreen.style.display = "none";
+        header.style.display = "flex";
+        main.style.display = "flex";
+        footer.style.display = "flex";
+      }, 3000);
+    });
+
+
+    // Get all buttons
+const buttons = document.querySelectorAll('button');
+
+// Get the modal and close button
+const modal = document.getElementById('modal');
+const closeButton = document.querySelector('.modal-close');
+
+// Function to display the modal with specific content
+function displayModal(content) {
+  const modalContent = document.querySelector('.modal-content');
+  modalContent.innerHTML = content; // Inject content into modal
+  modal.style.display = 'block'; // Show the modal
+}
+
+// Function to close the modal
+function closeModal() {
+  modal.style.display = 'none';
+}
+
+// Add click event listener to each button
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    const buttonId = button.id; // Get the button ID
+    let modalContent; // Define a variable to hold content
+
+    console.log(buttonId);
+    switch (buttonId) {
+      
+      case 'grow':
+        modalContent = `<div class="in-content"><h1>Grow Your Own Hemp: A Beginner&#39;s Guide</h1>
+
+<p>Ready to cultivate your own hemp? Here&#39;s a quick overview to get you started:</p>
+
+<h2>Essential Steps:</h2>
+
+<ul>
+  <li><b>Know Your Climate:</b> Choose hemp strains suited to your region&#39;s temperature and sunlight.</li>
+  <li><b>Prep Your Soil:</b> Ensure well-drained, fertile soil with a slightly acidic pH (6.0-7.0).</li>
+  <li><b>Planting:</b> Sow seeds directly outdoors in late spring or early summer. Maintain consistent moisture.</li>
+  <li><b>Watering:</b> Regularly water during the first few weeks, adjusting based on weather and plant maturity.</li>
+  <li><b>Sunlight:</b> Provide full sun exposure for optimal growth.</li>
+  <li><b>Weed Control:</b> Manage weeds manually or with organic methods to avoid harming your hemp plants.</li>
+  <li><b>Monitor & Harvest:</b> Keep an eye on your plants for signs of pests or diseases. Harvest when flowers reach peak maturity, following your chosen method (seeds, fiber, or CBD extraction).</li>
+</ul>
+
+<p><b>Remember:</b> Research local regulations and obtain any necessary permits before growing hemp.</p>
+
+<p><b>Happy Planting!</b></p></div>`;
+        break;
+      case 'shop':
+        modalContent = '<h1>This is button 2 content</h1>';
+        break;
+      case 'connect':
+        modalContent = '<h1>This is button 3 content</h1>';
+        break;
+      case 'earn':
+        modalContent = '<h1>This is button 4 content</h1>';
+        break;
+      // Add similar cases for button3 and button4 with their respective content
+      default:
+        modalContent = '<h1>Invalid button</h1>';
+    }
+
+    displayModal(modalContent); // Display modal with specific content
+  });
+});
+
+// Add click event listener to close button
+closeButton.addEventListener('click', closeModal);
+
+  </script>
+</body>
+</html>
