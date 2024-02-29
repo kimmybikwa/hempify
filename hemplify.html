@@ -350,6 +350,7 @@ footer {
   z-index: 100; /* Display modal above other elements */
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
 }
 
 .modal-content {
@@ -419,6 +420,106 @@ footer {
   padding: 5px 16px;
 }
 
+.feature-modal {
+  padding: 20px;
+  height: fit-content;
+  overflow-y: auto;
+}
+
+.feature-modal ul {
+  list-style-type: disc; /* Adjust for desired bullet style */
+  padding-left: 40px;
+  padding: 8px;
+}
+
+#connectModal .connection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+#connectModal .connection-card {
+  display: flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items: center;
+  margin: 8px;
+  padding: 8px;
+  border: 1px solid lightgrey;
+  box-shadow: 5px 5px 10px lightgrey;
+}
+
+#connectModal button {
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  margin: 8px;
+  border-radius: 5px;
+}
+
+#connectModal p {
+  text-align: center;
+  color: grey;
+}
+
+.product-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid grey;
+  box-shadow: 5px 5px 10px lightgrey;
+  padding: 16px;
+  margin: 16px;
+}
+
+
+/* Modal Action Button */
+.modal-action-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+.modal-action-button:hover {
+  background-color: #45a049;
+}
+
+/* Modal Content Styles */
+.carbon-calculator {
+  display: flex; /* Arrange elements horizontally */
+  flex-direction: column;
+  gap: 10px; /* Add spacing between elements */
+}
+
+.carbon-calculator label {
+  width: 150px; /* Set label width */
+  text-align: right; /* Align labels to the right */
+}
+
+.carbon-calculator input,
+.carbon-calculator select {
+  border: 1px solid #ccc;
+  padding: 5px;
+  width: 200px; /* Set input and select width */
+}
+
+.carbon-calculator button {
+  background-color: #4CAF50; /* Match modal action button color */
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.carbon-calculator button:hover {
+  background-color: #45a049;
+}
   </style>
 </head>
 <body>
@@ -454,7 +555,7 @@ footer {
     <div class="hero-content">
       <h1>Grow a Sustainable Future</h1>
       <p>Plant your own hemp and experience the benefits firsthand.</p>
-      <button class="hero-button">Learn More</button>
+      <button class="hero-button" id="learn-more">Learn More</button>
     </div>
   </section>
   
@@ -491,7 +592,6 @@ footer {
   </main>
 
   <div id="modal" class="modal">
-    <i class="modal-close fa fa-close">Close</i>
     <div class="modal-content">
       
     </div>    
@@ -522,7 +622,6 @@ footer {
     const header = document.querySelector("header");
     const main = document.querySelector("main");
     const footer = document.querySelector("footer");
-    document.getElementsByName
 
     window.addEventListener("load", ()=>{
       setTimeout(()=>{
@@ -539,7 +638,7 @@ const buttons = document.querySelectorAll('button');
 
 // Get the modal and close button
 const modal = document.getElementById('modal');
-const closeButton = document.querySelector('.modal-close');
+
 
 // Function to display the modal with specific content
 function displayModal(content) {
@@ -561,9 +660,27 @@ buttons.forEach(button => {
 
     console.log(buttonId);
     switch (buttonId) {
-      
+      case 'learn-more':
+        modalContent = `<div id="learnMoreModal" class="feature-modal">
+  <div class="feature-modal-content">
+    <span class="modal-close">&times;</span> 
+    <h2>The Power of Hemp: Fighting Climate Change</h2>
+    <p>Discover how industrial hemp can play a crucial role in combating climate change</p>
+    <ul>
+      <li><strong>Carbon Sequestration:</strong> Hemp absorbs CO2 more effectively than trees.</li>
+      <li><strong>Soil Regeneration:</strong> Hemp improves soil health and reduces erosion.</li>
+      <li><strong>Sustainable Products:</strong> Hemp replaces less eco-friendly resources in textiles, building materials, and more.</li>
+    </ul>
+    <p>Learn how Hemplify leverages hemp's potential to create a greener future! </p>
+    <button class="modal-action-button">Explore Hemplify's Solutions</button>
+  </div>
+</div>
+`;
+        break;
       case 'grow':
-        modalContent = `<div class="in-content"><h1>Grow Your Own Hemp: A Beginner&#39;s Guide</h1>
+        modalContent = `<div class="feature-modal">
+          <span class="modal-close">&times;</span>
+          <h1>Grow Your Own Hemp: A Beginner&#39;s Guide</h1>
 
 <p>Ready to cultivate your own hemp? Here&#39;s a quick overview to get you started:</p>
 
@@ -584,13 +701,106 @@ buttons.forEach(button => {
 <p><b>Happy Planting!</b></p></div>`;
         break;
       case 'shop':
-        modalContent = '<h1>This is button 2 content</h1>';
+        modalContent = `<div id="shopModal" class="feature-modal">
+  <div class="feature-modal-content">
+    <span class="modal-close">&times;</span>
+    <h2>Shop Hemplify Products</h2>
+    <p>Discover our range of eco-friendly hemp products!</p>
+    <div class="product-list">
+      <div class="product-item">
+        <img src="kim-hemp-logo.png" alt="Hemp Shirt" style="width: 100px; height: 100px;">
+        <p><strong>Hemp T-Shirt</strong></p>
+        <p>Comfortable and sustainable, made from 100% hemp.</p>
+        <button class="shop-button">Shop Now</button>
+      </div>
+      <div class="product-item">
+        <img src="kim-hemp-logo.png" alt="Hemp Hat" style="width: 100px; height: 100px;">
+        <p><strong>Hemp Hat</strong></p>
+        <p>Stylish and eco-conscious, perfect for sun protection.</p>
+        <button class="shop-button">Shop Now</button>
+      </div>
+      <div class="product-item">
+        <img src="kim-hemp-logo.png" alt="Hemp Tote Bag" style="width: 100px; height: 100px;">
+        <p><strong>Hemp Tote Bag</strong></p>
+        <p>Durable and reusable, ditch plastic with this eco-friendly option.</p>
+        <button class="shop-button">Shop Now</button>
+      </div>
+    </div>
+    <p>Explore our full range of products on the Hemplify Shop!</p>
+    <button class="modal-action-button">Visit Hemplify Shop</button>
+  </div>
+</div>
+`;
         break;
       case 'connect':
-        modalContent = '<h1>This is button 3 content</h1>';
+        modalContent = `<div id="connectModal" class="feature-modal">
+  <div class="feature-modal-content">
+    <span class="modal-close">&times;</span>
+    <h2>Connect with the Hemp Community</h2>
+    <p>Connect with individuals and organizations leading the way in hemp!</p>
+
+    <div class="connection-grid">
+      <div class="connection-card">
+        <img src="user.png" alt="User Profile Image" style="width: 100px; height: 100px; border-radius: 50%;">
+        <p><strong>John Smith</strong></p>
+        <p>Hemp farmer and advocate</p>
+        <button class="connect-button">Connect</button>
+      </div>
+      <div class="connection-card">
+        <img src="user.png" alt="User Profile Image" style="width: 100px; height: 100px; border-radius: 50%;">
+        <p><strong>Jane Doe</strong></p>
+        <p>Hemp product developer</p>
+        <button class="connect-button">Connect</button>
+      </div>
+      <div class="connection-card">
+        <img src="user.png" alt="User Profile Image" style="width: 100px; height: 100px; border-radius: 50%;">
+        <p><strong>Hemp for Change</strong></p>
+        <p>Non-profit organization</p>
+        <button class="connect-button">Learn More</button>
+      </div>
+      <div class="connection-card">
+        <img src="user.png" alt="User Profile Image" style="width: 100px; height: 100px; border-radius: 50%;">
+        <p><strong>Sustainable Hemp Co.</strong></p>
+        <p>Hemp product manufacturer</p>
+        <button class="connect-button">Visit Website</button>
+      </div>
+    </div>
+
+    <p>Discover more connections and resources on the Hemplify Network!</p>
+    <button class="modal-action-button">Explore Hemplify Network</button>
+  </div>
+</div>
+`;
         break;
       case 'earn':
-        modalContent = '<h1>This is button 4 content</h1>';
+        modalContent = `<div id="earnModal" class="feature-modal">
+  <div class="feature-modal-content">
+    <span class="modal-close">&times;</span>
+    <h2>Earn Rewards by Reducing Your Carbon Footprint</h2>
+    <p>
+      Hemplify rewards users for making eco-conscious choices! Calculate your carbon footprint and discover ways to reduce it with hemp.
+    </p>
+
+    <div class="carbon-calculator">
+      <label for="transportation">Transportation (miles driven per week):</label>
+      <input type="number" id="transportation" min="0" value="0"><br>
+      <label for="electricity">Electricity usage (kWh per month):</label>
+      <input type="number" id="electricity" min="0" value="0"><br>
+      <label for="diet">Diet (select one):</label>
+      <select id="diet">
+        <option value="meat-eater">Meat-eater</option>
+        <option value="vegetarian">Vegetarian</option>
+        <option value="vegan">Vegan</option>
+      </select><br>
+      <button id="calculate-button">Calculate Footprint</button>
+      <p id="footprint-result"></p>
+    </div>
+
+    <p>Learn how switching to hemp products and supporting sustainable practices can significantly reduce your footprint and earn you Hemplify rewards!</p>
+    <button class="modal-action-button">Explore Hemplify Rewards Program</button>
+  </div>
+</div>
+`;
         break;
       // Add similar cases for button3 and button4 with their respective content
       default:
@@ -598,11 +808,48 @@ buttons.forEach(button => {
     }
 
     displayModal(modalContent); // Display modal with specific content
+
+    const closeButtons = document.querySelector('.modal-close');
+console.log(closeButtons);
+// Add click event listener to close button
+  closeButton.addEventListener('click', closeModal);
   });
 });
 
-// Add click event listener to close button
-closeButton.addEventListener('click', closeModal);
+
+
+
+
+// Get references to input elements and result display
+const transportationInput = document.getElementById("transportation");
+const electricityInput = document.getElementById("electricity");
+const dietSelect = document.getElementById("diet");
+const calculateButton = document.getElementById("calculate-button");
+const footprintResult = document.getElementById("footprint-result");
+
+// Function to calculate carbon footprint based on user input
+function calculateFootprint() {
+  const transportation = parseFloat(transportationInput.value) * 0.12; // Assuming 0.12 lb CO2 per mile driven
+  const electricity = parseFloat(electricityInput.value) * 0.6; // Assuming 0.6 lb CO2 per kWh (adjust based on your region's energy mix)
+  let dietFactor = 0;
+  switch (dietSelect.value) {
+    case "meat-eater":
+      dietFactor = 2.5; // Adjust these factors based on research on average carbon footprint per diet
+      break;
+    case "vegetarian":
+      dietFactor = 1.5;
+      break;
+    case "vegan":
+      dietFactor = 1;
+      break;
+  }
+
+  const totalFootprint = transportation + electricity + dietFactor;
+  footprintResult.textContent = `Your estimated carbon footprint is ${totalFootprint.toFixed(2)} lbs CO2 per week.`;
+}
+
+// Event listener for the calculate button
+calculateButton.addEventListener("click", calculateFootprint);
 
   </script>
 </body>
